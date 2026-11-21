@@ -37,23 +37,74 @@ To create a sample retail dataset, identify and handle missing values (`NaN`/`No
 
 ## Program
 
-#Cleaning and Preparing Retail Data using Pandas
-
-#Step 1: Create a sample retail dataset
-
-#Step 2: Check for missing values
-
-#Step 3: Fill missing numeric values with column mean
-
-#Step 4: Fill missing Region with mode (most frequent value)
-
-#Step 5: Remove duplicate records
-
-#Step 6: Display summary statistics
+import pandas as pd  
 
 
+data = {  
+    "Order_ID": [201, 202, 203, 204, 205, 206, 207, 208, 209, 203],  
+    "Product": [  
+        "Laptop",  
+        "Office Chair",  
+        "Desk Lamp",  
+        "Monitor",  
+        "Keyboard",  
+        "Standing Desk",  
+        "Mouse",  
+        "Webcam",  
+        "Headset",  
+        "Desk Lamp",  
+    ],  
+    "Region": [  
+        "South",  
+        "North",  
+        "South",  
+        None,  
+        "West",  
+        "South",  
+        "East",  
+        "North",  
+        "South",  
+        "South",  
+    ],  
+    "Sales": [54000.0, 12500.0, None, 22000.0, 3500.0, 28000.0, None, 4800.0, 6200.0, None],  
+    "Discount": [0.10, 0.15, 0.05, None, 0.00, 0.20, 0.10, None, 0.05, 0.05],  
+    "Profit": [8200.0, 2100.0, 950.0, None, 800.0, 4100.0, 750.0, 1100.0, None, 950.0],  
+}    
+
+df = pd.DataFrame(data)    
+print("--- Raw Retail Dataset ---")  
+print(df)  
+print("\nInitial Shape (rows, columns):", df.shape)  
+
+  
+print("\n--- Missing Values Per Column ---")  
+print(df.isnull().sum())  
+
+
+for col in ["Sales", "Discount", "Profit"]:  
+    df[col] = df[col].fillna(df[col].mean())  
+
+ 
+region_mode = df["Region"].mode()[0]  
+df["Region"] = df["Region"].fillna(region_mode)  
+  
+
+df_cleaned = df.drop_duplicates().reset_index(drop=True)  
+
+print("\n--- Cleaned Retail Dataset ---")  
+print(df_cleaned)  
+print("\nCleaned Shape (rows, columns):", df_cleaned.shape)            
+print("\nRemaining Missing Values:", df_cleaned.isnull().sum().sum())  
+
+print("\n--- Summary Statistics ---")  
+print(df_cleaned.describe())  
 
 ## Output
+
+<img width="548" height="681" alt="image" src="https://github.com/user-attachments/assets/55dcd120-5cf2-471a-9322-77b3573120c1" />
+<img width="462" height="182" alt="image" src="https://github.com/user-attachments/assets/9375687c-2870-4b19-b7a0-d8f14483f453" />
+
+
 
 
 ## Result
